@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'dart:io';
 import 'package:easy_localization/src/public_ext.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart/bloc_files/favorite_product_bloc.dart';
@@ -27,6 +28,7 @@ import 'package:smart/features/recipes/blocs/receipts_bloc/receipts_bloc.dart';
 import 'package:smart/features/recipes/recipes_favorites_screen.dart';
 import 'package:smart/main.dart';
 import 'package:smart/order_process/order_process.dart';
+import 'package:smart/pages/recomendations_page.dart';
 import 'package:smart/pages/secondary_page.dart';
 import 'package:smart/pages/shopping_list/shopping_lists_page.dart';
 import 'package:smart/theme/app_screen.dart';
@@ -46,11 +48,13 @@ class HomeContent extends StatefulWidget {
 class _HomeContentState extends State<HomeContent> {
   Future<void> refresh(BuildContext context) async {
     ImInShopBloc _imInShopBloc = BlocProvider.of(context);
-    AddressesClientBloc _clientAddressBloc = BlocProvider.of<AddressesClientBloc>(context);
+    AddressesClientBloc _clientAddressBloc =
+        BlocProvider.of<AddressesClientBloc>(context);
     BasketListBloc _basketListBloc = BlocProvider.of<BasketListBloc>(context);
     StoriesListBloc _storiesListBloc = BlocProvider.of(context);
     OrderProcessListBloc _orderProcessListBloc = BlocProvider.of(context);
-    AssortmentRecommendationBloc _assortmentRecommendationBloc = BlocProvider.of<AssortmentRecommendationBloc>(context);
+    AssortmentRecommendationBloc _assortmentRecommendationBloc =
+        BlocProvider.of<AssortmentRecommendationBloc>(context);
     CatalogsBloc catalogsBloc = BlocProvider.of(context);
     FavoriteProductBloc favoriteProductBloc = BlocProvider.of(context); //
 
@@ -66,20 +70,28 @@ class _HomeContentState extends State<HomeContent> {
     ////REFRESH EVENTS
   }
 
-  bool isSocialNetworkFacebook = prefs.getBool(SharedKeys.isSocialNetworkFacebook) ?? false;
+  bool isSocialNetworkFacebook =
+      prefs.getBool(SharedKeys.isSocialNetworkFacebook) ?? false;
 
   @override
   Widget build(BuildContext context) {
-    ShoppingListsBloc _shoppingListsBloc = BlocProvider.of<ShoppingListsBloc>(context);
+    ShoppingListsBloc _shoppingListsBloc =
+        BlocProvider.of<ShoppingListsBloc>(context);
 
     AddressesShopBloc _shopsBloc = BlocProvider.of<AddressesShopBloc>(context);
     SmartContactsBloc _smartContactsBloc = BlocProvider.of(context);
 
-    return BlocConsumer<SmartContactsBloc, SmartContactsState>(listener: (BuildContext context, state) {
+    return BlocConsumer<SmartContactsBloc, SmartContactsState>(
+        listener: (BuildContext context, state) {
       if (state is SmartContactsLoadedState) {
-        isSocialNetworkFacebook = state.smartContactsModel.data.socialNetworkFacebook == '1' ? true : false;
+        isSocialNetworkFacebook =
+            state.smartContactsModel.data.socialNetworkFacebook == '1'
+                ? true
+                : false;
         if (!versionIsValid(
-            minVersion: Platform.isIOS ? state.smartContactsModel.data.iosVersion : state.smartContactsModel.data.androidVersion,
+            minVersion: Platform.isIOS
+                ? state.smartContactsModel.data.iosVersion
+                : state.smartContactsModel.data.androidVersion,
             currentVersion: state.appVersion)) {
           showModalBottomSheet(
               clipBehavior: Clip.hardEdge,
@@ -87,8 +99,10 @@ class _HomeContentState extends State<HomeContent> {
               useSafeArea: true,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(heightRatio(size: 25, context: context)),
-                  topRight: Radius.circular(heightRatio(size: 25, context: context)),
+                  topLeft:
+                      Radius.circular(heightRatio(size: 25, context: context)),
+                  topRight:
+                      Radius.circular(heightRatio(size: 25, context: context)),
                 ),
               ),
               builder: (context) {
@@ -113,30 +127,36 @@ class _HomeContentState extends State<HomeContent> {
               color: Colors.red,
               onRefresh: () => refresh(context),
               child: SingleChildScrollView(
-                padding: EdgeInsets.symmetric(horizontal: widthRatio(size: 16, context: context)),
+                padding: EdgeInsets.symmetric(
+                    horizontal: widthRatio(size: 16, context: context)),
                 scrollDirection: Axis.vertical,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     SizedBox(height: heightRatio(size: 16, context: context)),
                     StoriesListWidget(),
-                    if (isSocialNetworkFacebook) SizedBox(height: heightRatio(size: 15, context: context)),
+                    if (isSocialNetworkFacebook)
+                      SizedBox(height: heightRatio(size: 15, context: context)),
                     if (isSocialNetworkFacebook) HomePopupBetaVersion(),
                     OrderProcess(), //Ваш заказ в процессе
                     SizedBox(height: heightRatio(size: 16, context: context)),
                     Banners(),
                     Container(
-                      padding: EdgeInsets.only(bottom: heightRatio(size: 15, context: context)),
+                      padding: EdgeInsets.only(
+                          bottom: heightRatio(size: 15, context: context)),
                       clipBehavior: Clip.hardEdge,
                       decoration: BoxDecoration(
                         color: whiteColor,
                         borderRadius: BorderRadius.only(
-                            bottomLeft: Radius.circular(heightRatio(size: 25, context: context)),
-                            bottomRight: Radius.circular(heightRatio(size: 25, context: context))),
+                            bottomLeft: Radius.circular(
+                                heightRatio(size: 25, context: context)),
+                            bottomRight: Radius.circular(
+                                heightRatio(size: 25, context: context))),
                       ),
                       child: Column(
                         children: [
-                          SizedBox(height: heightRatio(size: 24, context: context)),
+                          SizedBox(
+                              height: heightRatio(size: 24, context: context)),
                           Padding(
                             padding: EdgeInsets.symmetric(
                               horizontal: widthRatio(size: 5, context: context),
@@ -170,10 +190,18 @@ class _HomeContentState extends State<HomeContent> {
                                   width: widthRatio(size: 53, context: context),
                                   child: InkWell(
                                     onTap: () {
-                                      _shoppingListsBloc.add(ShoppingListsLoadEvent());
-                                      Navigator.push(context, MaterialPageRoute(builder: (context) => ShoppinglistsPage()));
+                                      _shoppingListsBloc
+                                          .add(ShoppingListsLoadEvent());
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  ShoppinglistsPage()));
                                     },
-                                    child: homePageTopMenuItem(text: "ListsText".tr(), imagePath: "assets/images/newList.svg", context: context),
+                                    child: homePageTopMenuItem(
+                                        text: "ListsText".tr(),
+                                        imagePath: "assets/images/newList.svg",
+                                        context: context),
                                   ),
                                 ),
                                 SizedBox(
@@ -181,13 +209,22 @@ class _HomeContentState extends State<HomeContent> {
                                   child: InkWell(
                                     onTap: () {
                                       _shopsBloc.add(MapAddressesShopEvent());
-                                      Navigator.push(context, MaterialPageRoute(builder: (context) => HomeChooseStoreScreen()));
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  HomeChooseStoreScreen()));
                                     },
-                                    child: homePageTopMenuItem(text: "storesText".tr(), imagePath: "assets/images/newStorBold2.svg", context: context),
+                                    child: homePageTopMenuItem(
+                                        text: "storesText".tr(),
+                                        imagePath:
+                                            "assets/images/newStorBold2.svg",
+                                        context: context),
                                   ),
                                 ),
                                 SizedBox(
-                                  width: widthRatio(size: 55.5, context: context),
+                                  width:
+                                      widthRatio(size: 55.5, context: context),
                                   child: InkWell(
                                     onTap: () {
                                       // _smartContactsBloc
@@ -196,10 +233,17 @@ class _HomeContentState extends State<HomeContent> {
                                       Navigator.push(
                                           context,
                                           MaterialPageRoute(
-                                              builder: (context) =>
-                                                  SecondaryPage(upText: "contactsText".tr(), contentWidget: Center(child: ContactsWidget()))));
+                                              builder: (context) => SecondaryPage(
+                                                  upText: "contactsText".tr(),
+                                                  contentWidget: Center(
+                                                      child:
+                                                          ContactsWidget()))));
                                     },
-                                    child: homePageTopMenuItem(text: "contactsText".tr(), imagePath: "assets/images/newContacts.svg", context: context),
+                                    child: homePageTopMenuItem(
+                                        text: "contactsText".tr(),
+                                        imagePath:
+                                            "assets/images/newContacts.svg",
+                                        context: context),
                                   ),
                                 ),
                               ],
@@ -223,7 +267,10 @@ class _HomeContentState extends State<HomeContent> {
                         //   );
                         // }
                         if (state is ReceiptsLoadedState) {
-                          int recipeCount = state.receiptsList.data.where((recipe) => recipe.isFavorite == true).toList().length;
+                          int recipeCount = state.receiptsList.data
+                              .where((recipe) => recipe.isFavorite == true)
+                              .toList()
+                              .length;
                           String recipeCountText = '';
                           if (recipeCount == 1) {
                             recipeCountText = 'рецепт';
@@ -234,45 +281,84 @@ class _HomeContentState extends State<HomeContent> {
                           }
                           return recipeCount > 0
                               ? InkWell(
-                                  onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => RecipesFavoritesScreen())),
+                                  onTap: () => Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              RecipesFavoritesScreen())),
                                   child: Container(
-                                    margin: EdgeInsets.only(bottom: heightRatio(size: 20, context: context)),
-                                    height: heightRatio(size: 120, context: context),
+                                    margin: EdgeInsets.only(
+                                        bottom: heightRatio(
+                                            size: 20, context: context)),
+                                    height: heightRatio(
+                                        size: 120, context: context),
                                     width: double.maxFinite,
                                     padding: EdgeInsets.only(
-                                      left: widthRatio(size: 16, context: context),
-                                      right: widthRatio(size: 10, context: context),
-                                      top: heightRatio(size: heightRatio(size: 19, context: context), context: context),
-                                      bottom: heightRatio(size: heightRatio(size: 19, context: context), context: context),
+                                      left: widthRatio(
+                                          size: 16, context: context),
+                                      right: widthRatio(
+                                          size: 10, context: context),
+                                      top: heightRatio(
+                                          size: heightRatio(
+                                              size: 19, context: context),
+                                          context: context),
+                                      bottom: heightRatio(
+                                          size: heightRatio(
+                                              size: 19, context: context),
+                                          context: context),
                                     ),
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(10),
-                                      image: DecorationImage(image: AssetImage('assets/images/newFavoriteRecipes.png'), fit: BoxFit.cover),
+                                      image: DecorationImage(
+                                          image: AssetImage(
+                                              'assets/images/newFavoriteRecipes.png'),
+                                          fit: BoxFit.cover),
                                     ),
                                     child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
                                             Text(
                                               'Сохраненные рецепты',
-                                              style: appHeadersTextStyle(color: Colors.white, fontSize: heightRatio(size: 16, context: context)),
+                                              style: appHeadersTextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: heightRatio(
+                                                      size: 16,
+                                                      context: context)),
                                             ),
-                                            Icon(Icons.arrow_forward_ios_rounded, color: Colors.white, size: heightRatio(size: 23, context: context)),
+                                            Icon(
+                                                Icons.arrow_forward_ios_rounded,
+                                                color: Colors.white,
+                                                size: heightRatio(
+                                                    size: 23,
+                                                    context: context)),
                                           ],
                                         ),
-                                        SizedBox(height: heightRatio(size: 2, context: context)),
+                                        SizedBox(
+                                            height: heightRatio(
+                                                size: 2, context: context)),
                                         Text(
                                           'Рецепты, которые вы сохранили',
-                                          style: appLabelTextStyle(color: Colors.white, fontSize: heightRatio(size: 14, context: context)),
+                                          style: appLabelTextStyle(
+                                              color: Colors.white,
+                                              fontSize: heightRatio(
+                                                  size: 14, context: context)),
                                         ),
                                         Spacer(),
                                         Text(
                                           '$recipeCount $recipeCountText',
-                                          style: appHeadersTextStyle(color: Colors.white, fontSize: heightRatio(size: 16, context: context)),
+                                          style: appHeadersTextStyle(
+                                              color: Colors.white,
+                                              fontSize: heightRatio(
+                                                  size: 16, context: context)),
                                         ),
                                       ],
                                     ),
@@ -287,6 +373,40 @@ class _HomeContentState extends State<HomeContent> {
                     // RedesImInShopCArdButton(), //я в магазине
                     // SizedBox(height: heightRatio(size: 8, context: context)),
                     // RedesBonusesCardButton(),
+                    SizedBox(height: heightRatio(size: 20, context: context)),
+                    Material(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(
+                          heightRatio(size: 14, context: context),
+                        ),
+                      ),
+                      child: InkWell(
+                        onTap: () => Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                            title: "Recomendations",
+                            builder: (context) => RecomendationsPage(),
+                          ),
+                        ),
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: widthRatio(size: 8, context: context),
+                            vertical: heightRatio(size: 8, context: context),
+                          ),
+                          child: Text(
+                            "RecommendationsText".tr(),
+                            style: appTextStyle(
+                              fontSize: heightRatio(
+                                size: 14,
+                                context: context,
+                              ),
+                              color: mainColor,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
                     SizedBox(height: heightRatio(size: 20, context: context)),
                     RecommendationListWidget(isHomePage: true),
                     SizedBox(height: heightRatio(size: 33, context: context)),

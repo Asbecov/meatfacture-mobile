@@ -26,7 +26,8 @@ class ShoppingListDetailsContentWidget extends StatelessWidget {
     return BlocConsumer<ShoppingListDetailsBloc, ShoppingListDetailsState>(
       listener: (context, state) {
         if (state is ShoppingListDetailsOldTokenState) {
-          ProfilePage.logout(regBloc: _authPageBloc, basicPageBloc: _basicPageBloc);
+          ProfilePage.logout(
+              regBloc: _authPageBloc, basicPageBloc: _basicPageBloc);
         }
       },
       builder: (context, state) {
@@ -42,8 +43,14 @@ class ShoppingListDetailsContentWidget extends StatelessWidget {
               ),
               SizedBox(height: heightRatio(size: 25, context: context)),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: widthRatio(size: 20, context: context)),
-                child: Text("youHasNoGotProductsInThisShopListsText".tr(), textAlign: TextAlign.center, style: appTextStyle(fontSize: heightRatio(size: 18, context: context), color: colorBlack06, fontWeight: FontWeight.w500)),
+                padding: EdgeInsets.symmetric(
+                    horizontal: widthRatio(size: 20, context: context)),
+                child: Text("youHasNoGotProductsInThisShopListsText".tr(),
+                    textAlign: TextAlign.center,
+                    style: appTextStyle(
+                        fontSize: heightRatio(size: 18, context: context),
+                        color: colorBlack06,
+                        fontWeight: FontWeight.w500)),
               ),
             ],
           ));
@@ -63,7 +70,8 @@ class ShoppingListDetailsContentWidget extends StatelessWidget {
           return Container(
             color: whiteColor,
             child: SingleChildScrollView(
-              child: ShoppinsListProductItemBuilder(shoppingListDeatailsModel: state.shoppingListDeatailsModel),
+              child: ShoppinsListProductItemBuilder(
+                  shoppingListDeatailsModel: state.shoppingListDeatailsModel),
             ),
           );
         }
@@ -75,8 +83,10 @@ class ShoppingListDetailsContentWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Container(
-                  padding: EdgeInsets.all(widthRatio(size: 15, context: context)),
-                  decoration: BoxDecoration(color: colorBlack03, shape: BoxShape.circle),
+                  padding:
+                      EdgeInsets.all(widthRatio(size: 15, context: context)),
+                  decoration: BoxDecoration(
+                      color: colorBlack03, shape: BoxShape.circle),
                   child: SvgPicture.asset(
                     'assets/images/netErrorIcon.svg',
                     color: Colors.white,
@@ -84,17 +94,25 @@ class ShoppingListDetailsContentWidget extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: heightRatio(size: 15, context: context)),
-                Text("errorText".tr(), style: appTextStyle(fontSize: heightRatio(size: 18, context: context), color: colorBlack06, fontWeight: FontWeight.w500)),
+                Text("errorText".tr(),
+                    style: appTextStyle(
+                        fontSize: heightRatio(size: 18, context: context),
+                        color: colorBlack06,
+                        fontWeight: FontWeight.w500)),
                 SizedBox(height: heightRatio(size: 10, context: context)),
                 InkWell(
                   onTap: () {
-                    _shoppingListDetailsBloc.add(ShoppingListDetailsLoadEvent(shoppingListUuid: state.shoppingListUuid));
+                    _shoppingListDetailsBloc.add(ShoppingListDetailsLoadEvent(
+                        shoppingListUuid: state.shoppingListUuid));
                   },
                   child: Container(
                     color: Colors.transparent,
                     child: Text(
                       "tryAgainText".tr(),
-                      style: appTextStyle(fontSize: heightRatio(size: 14, context: context), color: mainColor, fontWeight: FontWeight.w500),
+                      style: appTextStyle(
+                          fontSize: heightRatio(size: 14, context: context),
+                          color: mainColor,
+                          fontWeight: FontWeight.w500),
                     ),
                   ),
                 ),
